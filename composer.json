@@ -1,0 +1,25 @@
+{
+    "name": "esupl/omnipay-begateway",
+    "type": "library",
+    "description": "BeGateway gateway for Omnipay payment processing library",
+    "keywords": [
+        "esupl",
+        "bepaid",
+        "begateway",
+        "gateway",
+        "merchant",
+        "omnipay",
+        "pay",
+        "payment"
+    ],
+    "license": "MIT",
+    "require": {
+        "omnipay/common": "^2.5",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Omnipay\\BeGateway\\": "src"
+        }
+    }
+}
