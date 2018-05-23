@@ -2,7 +2,7 @@
 
 namespace Omnipay\BeGateway\Message;
 
-use Omnipay\Common\Http\ClientInterface;
+use GuzzleHttp\ClientInterface;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
@@ -272,9 +272,8 @@ class EripRequest extends AbstractRequest
     public function sendData($data)
     {
         $response = $this->httpClient->request('POST', 'beyag/payments', [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ], json_encode($data));
+            'json' => $data,
+        ]);
 
         $response = json_decode($response->getBody(), true);
 
