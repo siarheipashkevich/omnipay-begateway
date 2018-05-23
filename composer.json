@@ -14,8 +14,9 @@
     ],
     "license": "MIT",
     "require": {
-        "omnipay/common": "^2.5",
-        "guzzlehttp/guzzle": "^6.3"
+        "omnipay/common": "^3.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "autoload": {
         "psr-4": {

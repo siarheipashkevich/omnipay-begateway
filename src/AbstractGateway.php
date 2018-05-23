@@ -3,9 +3,8 @@
 namespace Omnipay\BeGateway;
 
 use Omnipay\Common\Helper;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Client as HttpClient;
 use Omnipay\Common\GatewayInterface;
+use Omnipay\Common\Http\ClientInterface;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 /**
@@ -21,7 +20,7 @@ abstract class AbstractGateway implements GatewayInterface
     const NAME = 'BeGateway';
 
     /**
-     * @var HttpClient
+     * @var ClientInterface
      */
     protected $httpClient;
 
