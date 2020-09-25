@@ -2,7 +2,7 @@
 
 namespace Omnipay\BeGateway;
 
-use GuzzleHttp\Client as HttpClient;
+use Omnipay\Common\AbstractGateway;
 use Omnipay\BeGateway\Message\EripRequest;
 use Omnipay\Common\Message\RequestInterface;
 
@@ -14,40 +14,69 @@ use Omnipay\Common\Message\RequestInterface;
 class Gateway extends AbstractGateway
 {
     /**
-     * The name of the gateway.
-     */
-    const NAME = 'BeGateway';
-
-    /**
-     * BePaid base url for requests.
-     *
-     * @var string
-     */
-    protected $apiBaseUrl = 'https://api.bepaid.by';
-
-    /**
      * Gets the name of the gateway.
      *
      * @return string
      */
     public function getName()
     {
-        return self::NAME;
+        return 'BeGateway';
     }
 
     /**
-     * Initializes this gateway with default parameters.
+     * Initialize this gateway with default parameters
      *
-     * @param array $params
-     * @return AbstractGateway
+     * @param array $parameters
+     * @return self
      */
-    public function initialize(array $params = []): AbstractGateway
+    public function initialize(array $parameters = array())
     {
-        if (!empty($params)) {
-            $this->httpClient = $this->httpClient ?: $this->getDefaultHttpClient($params);
-        }
+        // todo: настроить httpClient здесь с нужными параметрами чтобы не делать это внутри request
+        // https://github.com/hiqdev/omnipay-yandex-kassa
 
-        return $this;
+        return parent::initialize($parameters);
+    }
+
+    /**
+     * Sets the shop id.
+     *
+     * @param $value
+     * @return self
+     */
+    public function setShopId($value)
+    {
+        return $this->setParameter('shop_id', $value);
+    }
+
+    /**
+     * Gets the shop id.
+     *
+     * @return mixed
+     */
+    public function getShopId()
+    {
+        return $this->getParameter('shop_id');
+    }
+
+    /**
+     * Sets the shop key.
+     *
+     * @param $value
+     * @return self
+     */
+    public function setShopKey($value)
+    {
+        return $this->setParameter('shop_key', $value);
+    }
+
+    /**
+     * Gets the shop key.
+     *
+     * @return mixed
+     */
+    public function getShopKey()
+    {
+        return $this->getParameter('shop_key');
     }
 
     /**
@@ -58,28 +87,8 @@ class Gateway extends AbstractGateway
      */
     public function purchase(array $params = []): RequestInterface
     {
-        return $this->createRequest(EripRequest::class, $params);
-    }
+        // todo: передать доп. параметры для httpClient если они не буду здесь устанавливаться
 
-    /**
-     * Gets the global default HTTP client.
-     *
-     * @param array $params
-     * @return HttpClient
-     */
-    protected function getDefaultHttpClient(array $params): HttpClient
-    {
-        return new HttpClient([
-            'timeout' => 30,
-            'base_uri' => $this->apiBaseUrl,
-            'auth' => [
-                $params['shop_id'],
-                $params['shop_key'],
-            ],
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-        ]);
+        return $this->createRequest(EripRequest::class, $params);
     }
 }

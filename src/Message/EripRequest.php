@@ -2,10 +2,8 @@
 
 namespace Omnipay\BeGateway\Message;
 
-use GuzzleHttp\ClientInterface;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 /**
  * Class EripRequest
@@ -15,25 +13,11 @@ use Symfony\Component\HttpFoundation\Request as HttpRequest;
 class EripRequest extends AbstractRequest
 {
     /**
-     * The request client.
+     * BePaid base url for requests.
      *
-     * @var ClientInterface
+     * @var string
      */
-    protected $httpClient;
-
-    /**
-     * EripRequest constructor.
-     *
-     * @param ClientInterface $httpClient
-     * @param HttpRequest $httpRequest
-     */
-    public function __construct(ClientInterface $httpClient, HttpRequest $httpRequest)
-    {
-        $this->httpClient = $httpClient;
-        $this->httpRequest = $httpRequest;
-
-        $this->initialize();
-    }
+    protected $apiBaseUrl = 'https://api.bepaid.by';
 
     /**
      * Gets the amount.
@@ -264,6 +248,29 @@ class EripRequest extends AbstractRequest
     }
 
     /**
+     * Gets the endpoint.
+     *
+     * @return string
+     */
+    public function getEndpoint()
+    {
+        return sprintf('%s/%s', $this->apiBaseUrl, 'beyag/payments');
+    }
+
+    /**
+     * Gets the headers.
+     *
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+        ];
+    }
+
+    /**
      * Sends the request with specified data.
      *
      * @param mixed $data
@@ -271,9 +278,22 @@ class EripRequest extends AbstractRequest
      */
     public function sendData($data)
     {
-        $response = $this->httpClient->request('POST', 'beyag/payments', [
-            'json' => $data,
-        ]);
+        // todo: eщё надо установить
+        // 'timeout' => 30,
+        // 'auth' => [
+        //     $params['shop_id'],
+        //     $params['shop_key'],
+        //  ],
+
+        $response = $this->httpClient->request(
+            'POST',
+            $this->getEndpoint(),
+            $this->getHeaders(),
+            [
+                // https://github.com/thephpleague/omnipay-sagepay/blob/master/src/Message/AbstractRequest.php#L208
+                'json' => $data,
+            ]
+        );
 
         $response = json_decode($response->getBody(), true);
 
