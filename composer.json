@@ -13,12 +13,13 @@
         "payment"
     ],
     "license": "MIT",
-    "require": {
-        "omnipay/common": "^3.0"
-    },
     "autoload": {
         "psr-4": {
             "Omnipay\\BeGateway\\": "src"
         }
+    },
+    "require": {
+        "omnipay/common": "^3",
+        "php-http/guzzle7-adapter": "^0.1.1"
     }
 }
